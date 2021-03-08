@@ -265,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
                     if (mOperation != ' ' && mtvResultText.contains("=")) {
                         first = mResult;
                         mFirst = "" + mResult;
-                        setTvResult("" + mResult + mOperation + mSecond);
+                        setTvResult("" + splitZero("" + mResult) + mOperation + mSecond);
                     }
                     addCharToText(" = ");
 
@@ -296,8 +296,9 @@ public class MainActivity extends AppCompatActivity {
                         throw new ArithmeticException("Переполнение");
                     }
                     resultText = splitZero(resultText);
+                    addCharToText(resultText);
                 }
-                addCharToText(resultText);
+
             } catch (Exception e) {
                 addCharToText(" : " + e.getMessage());
                 mOperation = '!';
@@ -309,17 +310,28 @@ public class MainActivity extends AppCompatActivity {
     private final View.OnClickListener ButtonPlusClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (mOperation == '!' || mOperation != ' ' || mFirst.equals("")) return;
-            mOperation = '+';
-            addCharToText("+");
+            if (mOperation == '!' || mOperation != ' ') {
+                return;
+            } else if (mFirst.contains("-") && mFirst.length() == 1) {
+                initCalc();
+            } else {
+                mOperation = '+';
+                addCharToText("+");
+            }
         }
     };
+
     private final View.OnClickListener ButtonMinusClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (mOperation == '!' || mOperation != ' ' || mFirst.equals("")) return;
-            mOperation = '-';
-            addCharToText("-");
+            if (mOperation == '!' || mOperation != ' ') {
+                return;
+            } else if (mFirst.equals("")) {
+                addCharToParam("-");
+            } else {
+                mOperation = '-';
+                addCharToText("-");
+            }
         }
     };
     private final View.OnClickListener ButtonPersClickListener = new View.OnClickListener() {
