@@ -8,6 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+//1.	Переделайте все кнопки на материал.
+//2.	Все размеры и строки сделайте ресурсами.
+//3.	Создайте стиль для своего приложения.
+//4.	* Создайте светлую и тёмную тему для приложения.
+
 public class MainActivity extends AppCompatActivity {
 
 
