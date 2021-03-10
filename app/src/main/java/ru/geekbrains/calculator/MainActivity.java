@@ -2,10 +2,13 @@ package ru.geekbrains.calculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 //1.	Переделайте все кнопки на материал.
@@ -15,6 +18,11 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Имя настроек
+    private static final String prefs = "prefs.xml";
+
+    // Имя параметра в настройках
+    private static final String pref_name = "theme";
 
     public static final String NAME_ACTIVITY = "MainActivity";
 
@@ -32,11 +40,31 @@ public class MainActivity extends AppCompatActivity {
     TextView tvResult;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        boolean isDarkTheme = getSharedPreferences(prefs, MODE_PRIVATE).
+                getBoolean(pref_name, false);
+        if (isDarkTheme) {
+            setTheme(R.style.Theme_CalculatorDark);
+        } else {
+            setTheme(R.style.Theme_Calculator);
+        }
+
         setContentView(R.layout.activity_main);
+
+        Switch themeSwitch = findViewById(R.id.SwitchTheme);
+        themeSwitch.setOnCheckedChangeListener(
+                (CompoundButton buttonView, boolean isChecked) -> {
+                    SharedPreferences sharedPreferences = getSharedPreferences(prefs, MODE_PRIVATE);
+                    if (sharedPreferences.getBoolean(pref_name, false) != isChecked) {
+                        sharedPreferences.edit().
+                                putBoolean(pref_name, isChecked).apply();
+                        recreate(); // заново попадём в onCreate
+                    }
+                });
+
 
         Button mButton0 = findViewById(R.id.button0);
         Button mButton00 = findViewById(R.id.button00);
@@ -285,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
                             mResult = first * second;
                             break;
                         case '%':
-                            mResult = (first * second)/100;
+                            mResult = (first * second) / 100;
                             break;
                         case '/':
                             if (mSecond.equals("0")) {
