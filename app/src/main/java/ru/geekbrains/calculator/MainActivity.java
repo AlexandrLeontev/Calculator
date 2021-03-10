@@ -11,6 +11,8 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.android.material.switchmaterial.SwitchMaterial;
+
 //1.	Переделайте все кнопки на материал.
 //2.	Все размеры и строки сделайте ресурсами.
 //3.	Создайте стиль для своего приложения.
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        Switch themeSwitch = findViewById(R.id.SwitchTheme);
+        SwitchMaterial themeSwitch = findViewById(R.id.SwitchTheme);
         themeSwitch.setOnCheckedChangeListener(
                 (CompoundButton buttonView, boolean isChecked) -> {
                     SharedPreferences sharedPreferences = getSharedPreferences(prefs, MODE_PRIVATE);
