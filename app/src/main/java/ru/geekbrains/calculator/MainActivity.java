@@ -1,30 +1,22 @@
 package ru.geekbrains.calculator;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
+import com.google.android.material.button.MaterialButton;
 
-import com.google.android.material.switchmaterial.SwitchMaterial;
+//1.	Создайте активити с настройками, где включите выбор темы приложения.
+//        2.	Доделайте приложение «Калькулятор». Это последний урок с созданием приложения «Калькулятор».
+//        3.	* Сделайте интент-фильтр для запуска калькулятора извне,
+//        а также напишите тестовое приложение, запускающее приложение-калькулятор.
 
-//1.	Переделайте все кнопки на материал.
-//2.	Все размеры и строки сделайте ресурсами.
-//3.	Создайте стиль для своего приложения.
-//4.	* Создайте светлую и тёмную тему для приложения.
 
 public class MainActivity extends AppCompatActivity {
-
-    // Имя настроек
-    private static final String prefs = "prefs.xml";
-
-    // Имя параметра в настройках
-    private static final String pref_name = "theme";
 
     public static final String NAME_ACTIVITY = "MainActivity";
 
@@ -46,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        boolean isDarkTheme = getSharedPreferences(prefs, MODE_PRIVATE).
-                getBoolean(pref_name, false);
+        boolean isDarkTheme = getSharedPreferences(Settings.prefs, MODE_PRIVATE).
+                getBoolean(Settings.pref_name, false);
         if (isDarkTheme) {
             setTheme(R.style.Theme_CalculatorDark);
         } else {
@@ -56,17 +48,14 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        SwitchMaterial themeSwitch = findViewById(R.id.SwitchTheme);
-        themeSwitch.setOnCheckedChangeListener(
-                (CompoundButton buttonView, boolean isChecked) -> {
-                    SharedPreferences sharedPreferences = getSharedPreferences(prefs, MODE_PRIVATE);
-                    if (sharedPreferences.getBoolean(pref_name, false) != isChecked) {
-                        sharedPreferences.edit().
-                                putBoolean(pref_name, isChecked).apply();
-                        recreate(); // заново попадём в onCreate
-                    }
-                });
-
+        MaterialButton btnSettings = findViewById(R.id.Settings);
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent runSettings = new Intent(MainActivity.this, Settings.class);
+                startActivity(runSettings);
+            }
+        });
 
         Button mButton0 = findViewById(R.id.button0);
         Button mButton00 = findViewById(R.id.button00);
